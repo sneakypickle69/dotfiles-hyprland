@@ -151,4 +151,10 @@ wal() {
     sed -i "s/gradient_color_4 = .*/gradient_color_4 = '$color4'/" ~/.config/cava/config
     sed -i "s/gradient_color_5 = .*/gradient_color_5 = '$color5'/" ~/.config/cava/config
     sed -i "s/gradient_color_6 = .*/gradient_color_6 = '$color6'/" ~/.config/cava/config
+    cp "${@: -1}" ~/Pictures/wallpapers/active.${${@: -1}##*.}
+    ext="${${@: -1}##*.}"
+    sed -i "s|path = .*active.*|path = $HOME/Pictures/wallpapers/active.$ext|" ~/.config/hyprlock/layouts/layout9.conf
+    hyprctl reload
 }
+
+export EDITOR=nano
