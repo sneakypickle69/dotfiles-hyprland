@@ -1,0 +1,64 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 35,
+    "reload_style_on_change": true,
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": ["clock#time"],
+    "modules-right": ["tray","group/bluework","clock#date", "custom/notification"],
+
+    "clock#time": {
+        "format": " {:%H:%M} ",
+        "interval": 1,
+        "tooltip-format": "{:%H:%M:%S}",
+        "on-click": "alacritty -e tty-clock -sc"
+    },
+    "tray": {
+        "icon-size": 14,
+        "spacing": 10,
+        "show-passive-items": true
+    },
+    "group/bluework": {
+        "orientation": "horizontal",
+        "modules": ["custom/audio","bluetooth","network"],
+    },
+    "custom/audio": {
+        "tooltip": false,
+        "format": "  ",
+        "on-click": "pavucontrol",
+    },
+    "bluetooth": {
+        "format-on": "󰂯",
+        "format-off": "󰂲",
+        "format-disabled": "󰂲",
+        "format-connected-battery": "{device_battery_percentage}% 󰂯",
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\n{device_address}\n{device_battery_percentage}%",
+        "on-click-right": "alacritty -e bluetui",
+        "on-click": "bash -c 'bluetoothctl show | grep -q \"Powered: yes\" && bluetoothctl power off || bluetoothctl power on'",
+    },
+    "network": {
+        "interface": "enp8s0",
+        "format-wifi": "󰖩 ",
+        "format-ethernet": "󰈀 ",
+        "format-disconnected": "󰖪 ",
+        "tooltip-format-disconnected": "Error",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
+        "tooltip-format-ethernet": "{ifname} 󰈀 ",
+        "on-click": "alacritty -e nmtui"
+    },
+    "clock#date": {
+        "format": " {:%d/%m/%Y} ",
+        "interval": 60,
+        "tooltip": false,
+        "on-click": "librewolf --new-tab https://calendar.proton.me"
+    },
+    "custom/notification": {
+        "tooltip": false,
+        "format": "  ",
+        "on-click": "swaync-client -t -sw",
+        "escape": true
+    },
+}
