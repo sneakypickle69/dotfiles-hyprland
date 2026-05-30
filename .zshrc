@@ -152,6 +152,7 @@ wal() {
     sed -i "s/gradient_color_5 = .*/gradient_color_5 = '$color5'/" ~/.config/cava/config
     sed -i "s/gradient_color_6 = .*/gradient_color_6 = '$color6'/" ~/.config/cava/config
     cp "${@: -1}" ~/Pictures/wallpapers/active.${${@: -1}##*.}
+    cp "${@: -1}" ~/.config/librewolf/librewolf/mrtdkvwz.default-default/wallpaper/e4114f7f-78e3-4d91-bbec-84c2d0ed9944
     ext="${${@: -1}##*.}"
     sed -i "s|path = .*active.*|path = $HOME/Pictures/wallpapers/active.$ext|" ~/.config/hyprlock/layouts/layout9.conf
     hyprctl reload
