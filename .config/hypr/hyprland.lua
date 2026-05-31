@@ -16,7 +16,7 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 hl.monitor({
 	output = "DP-3",
-	mode = "2560x1440@360", -- LOWEST IS 23
+	mode = "2560x1440@23", -- LOWEST IS 23
 	position = "0x0",
 	scale = "auto",
 })
@@ -118,6 +118,15 @@ local color_path = os.getenv("HOME") .. "/.cache/wal/colors-hyprland.lua"
 
 local colors = loadfile(color_path)()
 
+hl.layer_rule({
+	match = { namespace = "wofi" },
+	blur = true,
+})
+hl.layer_rule({
+    match = { namespace = "waybar" },
+    blur = true,
+})
+
 hl.config({
 	general = {
 		gaps_in = 1,
@@ -157,10 +166,11 @@ hl.config({
 		},
 
 		blur = {
-			enabled = true,
-			size = 3,
-			passes = 1,
-			vibrancy = 0.1696,
+    		enabled        = true,
+    		size           = 8,
+    		passes         = 2,
+    		vibrancy       = 0.1696,
+    		ignore_opacity = true,
 		},
 	},
 
@@ -423,7 +433,3 @@ hl.window_rule({
 ---- Custom ----
 ----------------
 
-hl.layer_rule({
-	match = { namespace = "wofi" },
-	blur = true,
-})

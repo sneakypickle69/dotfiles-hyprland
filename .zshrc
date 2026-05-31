@@ -159,3 +159,4 @@ wal() {
 }
 
 export EDITOR=nano
+export PATH=$PATH:~/.spicetify
