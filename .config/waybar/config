@@ -8,15 +8,13 @@
     "modules-right": ["tray","group/bluework","clock#date", "custom/notification"],
 
     "clock#time": {
-        "format": " {:%H:%M} ",
+        "format": "{:%H:%M}",
         "interval": 1,
         "tooltip-format": "{:%H:%M:%S}",
         "on-click": "alacritty -e tty-clock -sc"
     },
     "tray": {
-        "icon-size": 14,
-        "spacing": 10,
-        "show-passive-items": true
+        "show-passive-items": true,
     },
     "group/bluework": {
         "orientation": "horizontal",
@@ -24,7 +22,7 @@
     },
     "custom/audio": {
         "tooltip": false,
-        "format": "  ",
+        "format": "",
         "on-click": "pavucontrol",
     },
     "bluetooth": {
@@ -41,23 +39,23 @@
     },
     "network": {
         "interface": "enp8s0",
-        "format-wifi": "󰖩 ",
-        "format-ethernet": "󰈀 ",
-        "format-disconnected": "󰖪 ",
+        "format-wifi": "󰖩",
+        "format-ethernet": "󰈀",
+        "format-disconnected": "󰖪",
         "tooltip-format-disconnected": "Error",
         "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
         "tooltip-format-ethernet": "{ifname} 󰈀 ",
         "on-click": "alacritty -e nmtui"
     },
     "clock#date": {
-        "format": " {:%d/%m/%Y} ",
+        "format": "{:%d/%m/%Y}",
         "interval": 60,
         "tooltip": false,
         "on-click": "librewolf --new-tab https://calendar.proton.me"
     },
     "custom/notification": {
         "tooltip": false,
-        "format": "  ",
+        "format": "",
         "on-click": "swaync-client -t -sw",
         "escape": true
     },

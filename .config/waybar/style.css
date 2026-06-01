@@ -53,7 +53,6 @@ tooltip {
 }
 
 #clock{
-    padding: 0px 5px;
     color:@color7;
     transition: all .3s ease;
 }
@@ -62,7 +61,6 @@ tooltip {
 }
 
 #tray{
-    padding: 0px 5px;
     transition: all .3s ease; 
 }
 #tray menu * {
@@ -77,19 +75,21 @@ tooltip {
 #bluetooth{
     transition: all .3s ease;
     color:@color7;
-    padding: 0 5px 0 0;
 }
 #network{
     transition: all .3s ease;
     color:@color7;
-    padding: 0 0 0 5px;
 }
 
 #custom-notification {
     transition: all .3s ease;
+    margin-right: 5px;
 }
 
-#custom-notification:hover, #network:hover, #bluetooth:hover, #clock.date:hover, #tray:hover, #clock.time:hover, #custom-audio:hover {
+#custom-notification:hover, #network:hover, #bluetooth:hover, #clock.date:hover, #tray *:hover, #clock.time:hover, #custom-audio:hover {
     border-radius: 10px;
     background: rgba(0, 0, 0, 0.4);
+}
+#clock.time, #tray *, #custom-audio, #bluetooth, #network, #clock.date, #custom-notification {
+    padding: 0 10px 0 10px;
 }
