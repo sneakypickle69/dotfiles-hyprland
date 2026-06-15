@@ -16,7 +16,7 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 hl.monitor({
 	output = "DP-3",
-	mode = "2560x1440@23", -- LOWEST IS 23
+	mode = "2560x1440@360", -- LOWEST IS 23
 	position = "0x0",
 	scale = "auto",
 })
@@ -54,9 +54,9 @@ hl.config({
 ---------------------
 
 -- Set programs that you use
-local terminal = "alacritty"
+local terminal = "kitty"
 local fileManager = "thunar"
-local menu = "wofi --show drun"
+local menu = "rofi -show drun -theme ~/.config/rofi/spotlight.rasi -show-icons"
 
 -------------------
 ---- AUTOSTART ----
@@ -76,6 +76,9 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("sh -c 'sleep 6 && spotify &'")
 	hl.exec_cmd("sh -c 'sleep 8 && hyprctl dispatch focusmonitor DP-3 && hyprctl dispatch workspace 1 && hyprctl dispatch movecursor 1280 720'")
 	hl.exec_cmd("echo $HYPRLAND_INSTANCE_SIGNATURE > /tmp/hypr-session")
+	--[[ hl.exec_cmd("wl-paste --type text --watch cliphist store &")
+	hl.exec_cmd("wl-paste --type image --watch cliphist store &") ]]
+	hl.exec_cmd("wl-clip-persist --clipboard regular &")
 
 	--   hl.exec_cmd(terminal)
 	--   hl.exec_cmd("nm-applet")
@@ -88,8 +91,8 @@ end)
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
-hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("XCURSOR_SIZE", "32")
+hl.env("XCURSOR_THEME", "MacTahoe")
 
 -----------------------
 ----- PERMISSIONS -----
@@ -119,13 +122,13 @@ local color_path = os.getenv("HOME") .. "/.cache/wal/colors-hyprland.lua"
 local colors = loadfile(color_path)()
 
 hl.layer_rule({
-	match = { namespace = "wofi" },
+	match = { namespace = "rofi" },
 	blur = true,
 })
-hl.layer_rule({
+--[[ hl.layer_rule({
     match = { namespace = "waybar" },
     blur = true,
-})
+}) ]]
 
 hl.config({
 	general = {
@@ -166,11 +169,13 @@ hl.config({
 		},
 
 		blur = {
-    		enabled        = true,
-    		size           = 8,
-    		passes         = 2,
-    		vibrancy       = 0.1696,
-    		ignore_opacity = true,
+			enabled        = true,
+			size           = 8,
+			passes         = 3,
+			vibrancy       = 0.1696,
+			ignore_opacity = true,
+			noise          = 0.02,
+			xray           = false,
 		},
 	},
 
@@ -274,7 +279,7 @@ hl.config({
 
 		accel_profile = "flat",
 
-		sensitivity = 0, -- -1.0 - 1.0, 0 means no modification.
+		sensitivity = -0.4, -- -1.0 - 1.0, 0 means no modification.
 
 		touchpad = {
 			natural_scroll = false,
@@ -311,15 +316,17 @@ hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
-hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("wofi --show drun"))
+hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("librewolf"))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 hl.bind(mainMod .. " + D", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
 hl.bind("CTRL + ALT + DELETE", hl.dsp.exec_cmd("wlogout"))
+hl.bind("CTRL + SHIFT + ESCAPE", hl.dsp.exec_cmd("kitty btop"))
+hl.bind(mainMod .. " + period", hl.dsp.exec_cmd('rofimoji --action copy --selector-args="-theme ~/.config/rofi/spotlight.rasi"'))
 hl.bind(
 	mainMod .. " + SHIFT + S",
-	hl.dsp.exec_cmd("hyprshot -o '/home/sneakypickle/Pictures/Screenshots/' -m region -c")
-)
+
+	hl.dsp.exec_cmd('grim -g "$(slurp)" - | tee "/home/sneakypickle/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png" | wl-copy'))
 hl.bind(mainMod .. " + K", hl.dsp.exec_cmd("kate"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("playerctl stop && hyprlock"))
 
