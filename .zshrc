@@ -144,7 +144,7 @@ alias ll='eza -la --color=always --group-directories-first --icons'  # long form
 alias lt='eza -aT --color=always --group-directories-first --icons' # tree listing
 alias l.="eza -a | grep -e '^\.'"                                     # show only dotfiles
 alias \!s='source ~/.zshrc'
-alias \!gc='git clone'
+alias \!gcl='git clone'
 alias \!ga='git add'
 alias \!gc='git commit'
 alias \!gp='git push'
