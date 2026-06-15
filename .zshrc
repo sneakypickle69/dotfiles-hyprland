@@ -176,6 +176,7 @@ wal() {
 
 export EDITOR=nano
 export PATH=$PATH:~/.spicetify
+export TERM=kitty
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/sneakypickle/.lmstudio/bin"
