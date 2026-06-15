@@ -1,4 +1,21 @@
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+setopt NO_BANG_HIST
+
+export QT_QPA_PLATFORMTHEME=qt5ct
+export QT_STYLE_OVERRIDE=gtk
+export KDE_COLOR_SCHEME=dark
+export QT_QPA_PLATFORMTHEME=qt5ct
+export QT_STYLE_OVERRIDE=gtk
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+export KDE_COLOR_SCHEME=dark
+export GTK_THEME=Adwaita-dark
+
+
+greet_user() {
+  fastfetch --config /home/sneakypickle/.config/fastfetch/config.jsonc
+}
+
+greet_user
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -126,12 +143,11 @@ alias la='eza -a --color=always --group-directories-first --icons'  # all files 
 alias ll='eza -la --color=always --group-directories-first --icons'  # long format
 alias lt='eza -aT --color=always --group-directories-first --icons' # tree listing
 alias l.="eza -a | grep -e '^\.'"                                     # show only dotfiles
-
-greet_user() {
-  fastfetch
-}
-
-greet_user
+alias \!s='source ~/.zshrc'
+alias \!gc='git clone'
+alias \!ga='git add'
+alias \!gc='git commit'
+alias \!gp='git push'
 
 bindkey '^H' backward-kill-word
 x-paste() { LBUFFER+="$(wl-paste --no-newline)" }
@@ -160,3 +176,8 @@ wal() {
 
 export EDITOR=nano
 export PATH=$PATH:~/.spicetify
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/sneakypickle/.lmstudio/bin"
+# End of LM Studio CLI section
+
