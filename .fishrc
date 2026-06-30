@@ -1,0 +1,110 @@
+# ~/.config/fish/config.fish
+
+# Only run interactive-shell setup (greeting, prompt, etc.) for interactive shells
+if status is-interactive
+
+    # --- Greeting ---
+    function fish_greeting
+        fastfetch --config /home/sneakypickle/.config/fastfetch/config.jsonc
+    end
+
+    # --- Aliases ---
+    alias vsc='vscodium'
+    alias zed='zeditor'
+    alias ls='eza -a --color=always --group-directories-first --icons'
+    alias la='eza -a --color=always --group-directories-first --icons'
+    alias ll='eza -la --color=always --group-directories-first --icons'
+    alias lt='eza -aT --color=always --group-directories-first --icons'
+    alias l.='eza -a | grep -e "^\."'
+    alias !s='source ~/.config/fish/config.fish'
+    alias !gcl='git clone'
+    alias !ga='git add'
+    alias !gc='git commit'
+    alias !gp='git push'
+
+    # --- Keybindings ---
+    # backward-kill-word on Ctrl+H
+    bind \cH backward-kill-word
+
+    # Ctrl+V to paste from wl-paste
+    function x-paste
+        commandline -i (wl-paste --no-newline)
+    end
+    bind \cV x-paste
+
+    # --- pywal colors ---
+    # fish can't `source` a bash-style colors.sh directly; use the
+    # fish-specific sequence file pywal generates instead.
+    if test -f ~/.cache/wal/colors.fish
+        source ~/.cache/wal/colors.fish
+    end
+
+    # zsh-syntax-highlighting style equivalents don't exist for fish in this form;
+    # fish has its own built-in syntax highlighting controlled by color variables.
+    # Approximate equivalents using fish_color_* variables (optional - tune as desired):
+    if set -q color8
+        set -U fish_color_comment $color8
+    end
+    if set -q color6
+        set -U fish_color_operator $color6
+    end
+    if set -q color7
+        set -U fish_color_param $color7
+    end
+    if set -q color3
+        set -U fish_color_quote $color3
+    end
+    if set -q color2
+        set -U fish_color_command $color2
+    end
+
+    # --- wal function (wraps wal + reload + style resync) ---
+    function wal
+        command wal $argv
+        if test -f ~/.cache/wal/colors.fish
+            source ~/.cache/wal/colors.fish
+        end
+
+        if set -q color8
+            set -U fish_color_comment $color8
+        end
+        if set -q color6
+            set -U fish_color_operator $color6
+        end
+        if set -q color7
+            set -U fish_color_param $color7
+        end
+        if set -q color3
+            set -U fish_color_quote $color3
+        end
+        if set -q color2
+            set -U fish_color_command $color2
+        end
+
+        sed -i "s/gradient_color_1 = .*/gradient_color_1 = '$color1'/" ~/.config/cava/config
+        sed -i "s/gradient_color_2 = .*/gradient_color_2 = '$color2'/" ~/.config/cava/config
+        sed -i "s/gradient_color_3 = .*/gradient_color_3 = '$color3'/" ~/.config/cava/config
+        sed -i "s/gradient_color_4 = .*/gradient_color_4 = '$color4'/" ~/.config/cava/config
+        sed -i "s/gradient_color_5 = .*/gradient_color_5 = '$color5'/" ~/.config/cava/config
+        sed -i "s/gradient_color_6 = .*/gradient_color_6 = '$color6'/" ~/.config/cava/config
+
+        # last argument passed to the wal function (the wallpaper path)
+        set -l last_arg $argv[-1]
+        set -l ext (string split -r -m1 . -- $last_arg)[2]
+
+        cp $last_arg ~/Pictures/wallpapers/active.$ext
+        cp $last_arg ~/.config/librewolf/librewolf/mrtdkvwz.default-default/wallpaper/e4114f7f-78e3-4d91-bbec-84c2d0ed9944
+
+        sed -i "s|path = .*active.*|path = $HOME/Pictures/wallpapers/active.$ext|" ~/.config/hyprlock/layouts/layout9.conf
+        hyprctl reload
+    end
+
+    set -gx EDITOR nano
+    set -gx TERM kitty
+
+end
+
+# --- PATH and exports (these should run for ALL shells, not just interactive) ---
+fish_add_path ~/.spicetify
+fish_add_path /home/sneakypickle/.lmstudio/bin
+fish_add_path ~/.npm-global/bin
