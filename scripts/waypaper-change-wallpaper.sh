@@ -24,5 +24,12 @@ cp "$WALLPAPER" ~/.config/librewolf/librewolf/mrtdkvwz.default-default/wallpaper
 # Update hyprlock layout
 sed -i "s|path = .*active.*|path = $HOME/Pictures/wallpapers/active.$ext|" ~/.config/hyprlock/layouts/layout9.conf
 
+# Apply colors to all open kitty windows by finding its socket from its own env
+KITTY_PID=$(pgrep -f "kitty" | head -1)
+KITTY_SOCKET=$(grep -z KITTY_LISTEN_ON /proc/$KITTY_PID/environ 2>/dev/null | cut -d= -f2)
+if [[ -n "$KITTY_SOCKET" ]]; then
+    kitty @ --to "$KITTY_SOCKET" set-colors --all ~/.cache/wal/colors-kitty.conf
+fi
+
 # Reload hyprland
 hyprctl reload

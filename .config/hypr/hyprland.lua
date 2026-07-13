@@ -74,11 +74,17 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("sh -c 'sleep 4 && protonvpn-app &'")
 	hl.exec_cmd("sh -c 'sleep 5 && discord --start-minimized &'")
 	hl.exec_cmd("sh -c 'sleep 6 && spotify &'")
-	hl.exec_cmd("sh -c 'sleep 8 && hyprctl dispatch focusmonitor DP-3 && hyprctl dispatch workspace 1 && hyprctl dispatch movecursor 1280 720'")
+	hl.exec_cmd(
+		"sh -c 'sleep 8 && hyprctl dispatch focusmonitor DP-3 && hyprctl dispatch workspace 1 && hyprctl dispatch movecursor 1280 720'"
+	)
 	hl.exec_cmd("echo $HYPRLAND_INSTANCE_SIGNATURE > /tmp/hypr-session")
 	--[[ hl.exec_cmd("wl-paste --type text --watch cliphist store &")
 	hl.exec_cmd("wl-paste --type image --watch cliphist store &") ]]
 	hl.exec_cmd("wl-clip-persist --clipboard regular &")
+	hl.exec_cmd("gsettings set org.gnome.desktop.interface gtk-theme 'Breeze-Dark'")
+	hl.exec_cmd("gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'")
+	hl.exec_cmd("sleep 1 && /usr/lib/xdg-desktop-portal-hyprland &")
+	hl.exec_cmd("sleep 2 && /usr/lib/xdg-desktop-portal &")
 
 	--   hl.exec_cmd(terminal)
 	--   hl.exec_cmd("nm-applet")
@@ -91,7 +97,7 @@ end)
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
-hl.env("XCURSOR_SIZE", "32")
+hl.env("XCURSOR_SIZE", "24")
 hl.env("XCURSOR_THEME", "MacTahoe")
 
 -----------------------
@@ -121,6 +127,17 @@ local color_path = os.getenv("HOME") .. "/.cache/wal/colors-hyprland.lua"
 
 local colors = loadfile(color_path)()
 
+hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
+hl.env("GTK_THEME", "Breeze-Dark")
+
+hl.window_rule({
+	name = "thunarblur",
+	match = {
+		class = "thunar",
+	},
+	opacity = 0.8,
+})
+
 hl.layer_rule({
 	match = { namespace = "rofi" },
 	blur = true,
@@ -132,10 +149,10 @@ hl.layer_rule({
 
 hl.config({
 	general = {
-		gaps_in = 1,
+		gaps_in = 2,
 		gaps_out = 5,
 
-		border_size = 2,
+		border_size = 1,
 
 		-- CHANGE COLOR HERE WITH color.variablename SEE cat ~/.cache/wal/colors-hyprland.lua
 
@@ -154,8 +171,8 @@ hl.config({
 	},
 
 	decoration = {
-		rounding = 20,
-		rounding_power = 3,
+		rounding = 0,
+		rounding_power = 0,
 
 		-- Change transparency of focused and unfocused windows
 		active_opacity = 1.0,
@@ -169,13 +186,13 @@ hl.config({
 		},
 
 		blur = {
-			enabled        = true,
-			size           = 8,
-			passes         = 3,
-			vibrancy       = 0.1696,
+			enabled = true,
+			size = 8,
+			passes = 3,
+			vibrancy = 0.1696,
 			ignore_opacity = true,
-			noise          = 0.02,
-			xray           = false,
+			noise = 0.02,
+			xray = false,
 		},
 	},
 
@@ -259,7 +276,7 @@ hl.config({
 	misc = {
 		force_default_wallpaper = 0, -- Set to 0 or 1 to disable the anime mascot wallpapers
 		disable_hyprland_logo = true, -- If true disables the random hyprland logo / anime girl background. :(
-        disable_splash_rendering = true,
+		disable_splash_rendering = true,
 	},
 })
 
@@ -312,6 +329,8 @@ hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 local closeWindowBind = hl.bind(mainMod .. " + W", hl.dsp.window.close())
 -- closeWindowBind:set_enabled(false)
 -- hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
+hl.bind("ALT + Left", hl.dsp.send_shortcut({ mods = "", key = "Home" }))
+hl.bind("ALT + Right", hl.dsp.send_shortcut({ mods = "", key = "End" }))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
@@ -322,11 +341,16 @@ hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen", actio
 hl.bind(mainMod .. " + D", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
 hl.bind("CTRL + ALT + DELETE", hl.dsp.exec_cmd("wlogout"))
 hl.bind("CTRL + SHIFT + ESCAPE", hl.dsp.exec_cmd("kitty btop"))
-hl.bind(mainMod .. " + period", hl.dsp.exec_cmd('rofimoji --action copy --selector-args="-theme ~/.config/rofi/spotlight.rasi"'))
+hl.bind(
+	mainMod .. " + period",
+	hl.dsp.exec_cmd('rofimoji --action copy --selector-args="-theme ~/.config/rofi/spotlight.rasi"')
+)
 hl.bind(
 	mainMod .. " + SHIFT + S",
-
-	hl.dsp.exec_cmd('grim -g "$(slurp)" - | tee "/home/sneakypickle/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png" | wl-copy'))
+	hl.dsp.exec_cmd(
+		'grim -g "$(slurp)" - | tee "/home/sneakypickle/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png" | wl-copy'
+	)
+)
 hl.bind(mainMod .. " + K", hl.dsp.exec_cmd("kate"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("playerctl stop && hyprlock"))
 
@@ -439,4 +463,3 @@ hl.window_rule({
 ----------------
 ---- Custom ----
 ----------------
-
